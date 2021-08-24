@@ -17,12 +17,15 @@ class CreateUsersNewsTable extends Migration
             $table->id();
             $table->string("firstname", 30);
             $table->string("lastname", 5);
-            $table->string("gender", 5);
-            $table->string("birthday", 30);
+            $table->string("gender", 5)->nullable();
+            $table->string("birthday", 30)->nullable();
             $table->string("email", 30);
+            $table->string("password",200);
             $table->string("contact", 10);
             $table->string("address", 50);
-            //$table->boolval('active');
+            $table->boolean("active", 5)->default(0);
+            $table->integer('role')->default(2);
+            $table->timestamps();
         });
     }
 

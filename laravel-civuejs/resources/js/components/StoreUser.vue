@@ -2,15 +2,6 @@
 <div class="container">
         <h3>Add User</h3>
         <div slot="body" class="row">
-            <!-- @if {$errors->any()}
-                <div class="alert alert-danger">
-                <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-                </ul>
-                </div>
-            @endif -->
         <div class="col-md-6">
             <div class="form-group">
                 <label>Firstname</label>
@@ -27,26 +18,46 @@
 				</span>
             </div>
             <div class="form-group">
-                <label for="">Gender</label><br>
-                <div class="btn-group">
-                    <button class="btn btn-outline-dark fa fa-mars" :class="{'active':(user.gender == 'boy')}" @click.prevent="pickGender('boy')"> Male</button>
-                    <button class="btn btn-outline-dark fa fa-venus" :class="{'active': (user.gender == 'girl')}" @click.prevent="pickGender('girl')"> Female</button>
-                </div>
-                
+                <label>Email</label>
+                <input type="text" class="form-control"  name="email" v-model="user.email">
+                 <span class="error-messages">
+					<p class="alert alert-danger" v-for="message in errorMessages.email" :key=message.email>{{ message }}</p>
+				</span>
             </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-group-append">
+                    <input type="password" name="password" id="password" class="form-control" data-toggle="password" v-model="user.password">
+                </div>
+                 <span class="error-messages">
+					<p class="alert alert-danger" v-for="message in errorMessages.password" :key=message.password>{{ message }}</p>
+				</span>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="input-group-append">
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" data-toggle="password" v-model="user.confirmPassword">
+                </div>
+                 <span class="error-messages">
+					<p class="alert alert-danger" v-for="message in errorMessages.confirmPassword" :key=message.confirmPassword>{{ message }}</p>
+				</span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
             <div class="form-group">
                 <label>Birthday</label>
                 <input type="date" class="form-control"  name="birthday" v-model="user.birthday">
                 
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
-            <label>Email</label>
-                <input type="text" class="form-control"  name="email" v-model="user.email">
-                 <span class="error-messages">
-					<p class="alert alert-danger" v-for="message in errorMessages.email" :key=message.email>{{ message }}</p>
-				</span>
+                <label for="">Gender</label><br>
+                <div class="btn-group">
+                    <button class="btn btn-outline-dark fa fa-mars" :class="{'active':(user.gender == 'boy')}" @click.prevent="pickGender('boy')"> Male</button>
+                    <button class="btn btn-outline-dark fa fa-venus" :class="{'active': (user.gender == 'girl')}" @click.prevent="pickGender('girl')"> Female</button>
+                </div>
             </div>
             <div class="form-group">
             <label>Contact</label>
@@ -73,7 +84,9 @@
         </div>
 </template>
 
+
 <script>
+
 export default {
   data() {
     return {
@@ -83,9 +96,10 @@ export default {
   },
   methods: {
     storeUser() {
-    axios.post(`add-user`, this.user)
+        console.log(this.user);
+    axios.post(`api/register`, this.user)
         .then(response =>{
-            //  this.$router.push({ name: "users" });
+             this.$router.push({ name: "login" });
             console.log(response);
             this.errorMessages=response.data.result;
         })

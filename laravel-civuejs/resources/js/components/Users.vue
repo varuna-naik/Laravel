@@ -23,6 +23,7 @@
                 <th>Contact</th>
                 <th>Address</th>
                 <th colspan="2">Actions</th>
+                <th>Activate</th>
               </tr>
             </thead>
             <tbody>
@@ -49,11 +50,17 @@
                       @click="deleteUser(user.id)" >
                       </button>
                 </td>
+                <td>
+                    <button v-if="user.active"
+                      class="btn fa fa-check fa-lg bg-danger"
+                      @click="activateUser(user.id)">
+                    </button>
+                </td>
               </tr>
             </tbody>
           </table>
-          <div class="overflow-auto">
-            <b-pagination
+          <div class="overflow-auto" v-if="!searchResponseType">
+            <b-pagination 
               v-model="currentPage"
               :total-rows="rows"
               :per-page="total_pages"
@@ -90,7 +97,7 @@ export default {
   },
   methods: {
     getUsers(page=1){
-      axios.post(`get-users`,{page})
+      axios.get('/api/get-users',{page})
                   .then(response=>{
                     // console.log(response.data.last_page);
                     this.rows=response.data.last_page;
@@ -109,7 +116,8 @@ export default {
       });
     },
     searchUsers(){
-      axios.post(`search-users`,{first_name:this.searchText}).then(response=>{
+      axios.post(`search-users`,{searchText:this.searchText}).then(response=>{
+                    console.log(response);
                     this.searchResponseType=response.data.type;
                     this.rows=response.data.data.length;
                     this.users=response.data.data;

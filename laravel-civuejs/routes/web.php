@@ -25,10 +25,10 @@ Route::get('{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');
 
-Route::post('get-users','UserController@index')->name('get-users');
-Route::post('search-users','UserController@search')->name('search-users');
-Route::post('add-user','UserController@store')->name('add-user');
-Route::post('edit/update-user','UserController@update')->name('update-user');
-Route::post('edit/get-user-by-id','UserController@getUserById')->name('update-user');
-Route::post('delete-user','UserController@destroy')->name('delete-user');
-Route::get('show-user/{id}','UserController@show')->name('show-user');
+// Route::post('get-users','UserController@index')->name('get-users');
+// Route::post('search-users','UserController@search')->name('search-users');
+// Route::post('add-user','UserController@store')->name('add-user');
+// Route::post('edit/update-user','UserController@update')->name('update-user');
+// Route::post('edit/get-user-by-id','UserController@getUserById')->name('update-user');
+// Route::post('delete-user','UserController@destroy')->name('delete-user');
+// Route::get('show-user/{id}','UserController@show')->name('show-user');

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Users_new;
 use Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
-    //
+    
     public function index(Request $request,Users_new  $users)
     {
         $user = $users->getAllUsers($request);
@@ -30,7 +33,6 @@ class UserController extends Controller
         else{
             return response()->json(['data'=>$user,'type'=> false]);
         }
-        
     }
 
 
@@ -51,14 +53,14 @@ class UserController extends Controller
             'firstname' => 'required|max:255',
             'lastname' => 'required|max:255',
             'email'=>'required|email',
-            'contact'=>'required|max:10|min:10'
+            'contact'=>'required|max:10|min:10',
+            'password' => 'required|min:6',
+            'confirmPassword' => 'required_with:password|same:password|min:6'
+
+        ],
+        $messages = [
+            
         ]);
-        // $messages = [
-        //     'email.required' => 'email address is required',
-        //     'firstname.required' => 'The :firstname field is required.',
-        //     'lastname.required' => 'The :lastname field is required.',
-        //     'contact.required' => 'The :contact field is required.'
-        // ]);
 
         if ($validator->fails()) {
 
@@ -73,9 +75,14 @@ class UserController extends Controller
             $user->contact=$request->contact;
             $user->gender=$request->gender;
             $user->birthday=$request->birthday;
+            $user->password=Hash::make($request->password);
+            
             $user->save();
 
             return response()->json('User created successfully!');
+            // return $this->success([
+            //     'token' => $user->createToken('API Token')->plainTextToken
+            // ]);
         }
 
         
